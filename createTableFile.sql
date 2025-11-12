@@ -1,14 +1,1 @@
-CREATE TABLE user_tb (
-	id INTEGER PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL,
-	password VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE expense_tb (
-	id INTEGER PRIMARY KEY,
-	description VARCHAR(255),
-	amount NUMERIC(10,2) NOT NULL,
-	date DATE NOT NULL,
-	user_id INTEGER NOT NULL
-);
+SELECT * FROM user_tb
