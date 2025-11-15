@@ -15,6 +15,8 @@ const Card = ({ title, label }) => {
       name: inputName.current.value,
       email: inputEmail.current.value,
       password: inputPassword.current.value,
+    }).then(() => {
+      signIn()
     });
   }
 
@@ -24,7 +26,10 @@ const Card = ({ title, label }) => {
         email: inputEmail.current.value,
         password: inputPassword.current.value,
       })
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        localStorage.setItem("app_token", JSON.stringify(res.data))
+        console.log(localStorage.getItem("app_token"))
+      });
   }
 
   React.useEffect(() => {

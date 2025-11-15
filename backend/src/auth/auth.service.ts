@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt'
@@ -22,7 +22,7 @@ export class AuthService {
         const user = await this.userService.findOneByEmail(signInDto.email)
 
         if(!user || !(await bcrypt.compare(signInDto.password, user.password))){            
-            throw new UnauthorizedException()
+            throw new BadRequestException("Invalid Credentials")
         }
 
         const payload = {sub: user.id, email: user.email}
