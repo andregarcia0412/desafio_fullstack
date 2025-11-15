@@ -3,7 +3,7 @@ import "./style.card.css";
 import api from "../../services/api";
 
 const Card = ({ title, label }) => {
-  const [isLoginView, setLoginView] = React.useState(false);
+  const [isLoginView, setLoginView] = React.useState(true);
   const [isLoaded, setLoaded] = React.useState(false);
 
   const inputName = React.useRef();
