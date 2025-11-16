@@ -10,31 +10,99 @@ const Card = ({ title, label }) => {
   const inputEmail = React.useRef();
   const inputPassword = React.useRef();
 
+    React.useEffect(() => {
+      setLoaded(true);
+    }, []);
+
   async function createUser() {
-    await api.post("/user", {
-      name: inputName.current.value,
-      email: inputEmail.current.value,
-      password: inputPassword.current.value,
-    }).then(() => {
-      signIn()
-    });
+    const result = validateRegisterFields()
+
+    if(!result.ok){
+      console.log(result.message)
+      return
+    }
+
+    await api
+      .post("/user", {
+        name: inputName.current.value,
+        email: inputEmail.current.value,
+        password: inputPassword.current.value,
+      })
+      .then(() => {
+        signIn();
+      });
   }
 
   async function signIn() {
+    const result = validateSignInFields()
+    if(!result.ok){
+      console.log(result.message)
+      return
+    }
+
     await api
       .post("/auth/sign-in", {
         email: inputEmail.current.value,
         password: inputPassword.current.value,
       })
       .then((res) => {
-        localStorage.setItem("app_token", JSON.stringify(res.data))
-        console.log(localStorage.getItem("app_token"))
+        localStorage.setItem("app_token", JSON.stringify(res.data));
+        console.log(localStorage.getItem("app_token"));
       });
   }
 
-  React.useEffect(() => {
-    setLoaded(true);
-  }, []);
+  function validateSignInFields(){
+    const email = inputEmail.current.value.trim()
+    const password = inputPassword.current.value.trim()
+
+    if(!isValidEmail(email)){
+      return {ok: false, message:"Plase insert a valid E-mail adress"}
+    }
+
+    if(!password){
+      return {ok: false, message:"Please insert your password"}
+    }
+
+    if(password.length < 8){
+      return {ok:false, message:"Your password must have at least 8 digits"}
+    }
+
+    return{ok:true}
+  }
+
+  function validateRegisterFields(){
+    const name = inputName.current.value.trim()
+    const email = inputEmail.current.value.trim()
+    const password = inputPassword.current.value.trim()
+
+    if(!name){
+      return {ok: false, message:"Please insert your name"}
+    }
+    
+    if(!isValidEmail(email)){
+      return {ok: false, message:"Please insert a valid E-mail adress"}
+    }
+
+    if(!password){
+      return {ok: false, message:"Please insert your password"}
+    }
+
+    if(password.length < 8){
+      return {ok: false, message:"Your password must have at least 8 digits"}
+    }
+
+    return {ok:true}
+  }
+
+  function isValidEmail(email){
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+
+    if(emailRegex.test(email)){
+      return true
+    }
+
+    return false
+  }
 
   return (
     <form className={isLoaded ? "form-init" : ""}>
