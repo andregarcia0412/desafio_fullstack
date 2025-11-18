@@ -1,0 +1,26 @@
+.paginator{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.paginator span{
+    opacity: 0.5;
+}
+
+.paginator-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.1s linear;
+}
+
+.paginator-btn img{
+    width: 16px;
+    height: 16px;
+}
+
+.paginator-btn:hover{
+    opacity: 0.5;
+}

@@ -1,14 +1,24 @@
 import React from "react";
 import api from "../../services/api.js";
-import ExpenseCard from "../../components/expense-card/ExpenseCard.jsx";
+import ExpenseCardsContainer from "../../components/expense-cards-container/ExpenseCardsContainer.jsx";
+import "./style.css";
+import RegisterExpenseCard from "../../components/register-expense-card/RegisterExpenseCard.jsx";
 
 const Home = ({}) => {
   const nameInput = React.useRef();
   const priceInput = React.useRef();
   const categoryInput = React.useRef();
   const descriptionInput = React.useRef();
-  const userData = JSON.parse(localStorage.getItem("user_data"))?.user;
+
   const [userExpenses, setUserExpenses] = React.useState([]);
+  const [date, setDate] = React.useState();
+
+  const userData = JSON.parse(localStorage.getItem("user_data"))?.user;
+  const dateOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
 
   React.useEffect(() => {
     if (!localStorage.getItem("user_data")) {
@@ -18,33 +28,37 @@ const Home = ({}) => {
   }, []);
 
   async function createExpense() {
-    api
-      .post("/expense", {
-        name: nameInput.current.value,
-        category: categoryInput.current.value,
-        description: descriptionInput.current.value,
-        amount: Number(priceInput.current.value),
-        user_id: userData.id,
-      })
+    await api.post("/expense", {
+      name: nameInput.current.value,
+      category: categoryInput.current.value,
+      description: descriptionInput.current.value,
+      amount: Number(priceInput.current.value),
+      user_id: userData.id,
+    });
   }
 
   async function getExpenses() {
     const res = await api.get(`/expense/${userData.id}`);
+    setDate(
+      new Intl.DateTimeFormat("en-us", dateOptions).format(res.data.date)
+    );
     setUserExpenses(res.data);
+  }
+
+  async function removeExpense(id) {
+    await api.delete(`/expense/${id}`);
+    getExpenses();
   }
 
   return (
     <div>
-      {userExpenses.map((expense) => (
-        <ExpenseCard
-          key={expense.id}
-          name={expense.name}
-          description={expense.description}
-          category={expense.category}
-          price={expense.price}
-          date={new Date(expense.date).toLocaleDateString("pt-BR")}
-        />
-      ))}
+      <RegisterExpenseCard/>
+
+      <ExpenseCardsContainer
+        removeExpense={removeExpense}
+        userExpenses={userExpenses}
+        date={date}
+      />
 
       <div>
         <input placeholder="nome" ref={nameInput}></input>
@@ -53,9 +67,9 @@ const Home = ({}) => {
         <input placeholder="price" ref={priceInput}></input>
         <button
           type="button"
-          onClick={() => {
-            createExpense();
-            getExpenses();
+          onClick={async () => {
+            await createExpense();
+            await getExpenses();
           }}
         >
           Enviar

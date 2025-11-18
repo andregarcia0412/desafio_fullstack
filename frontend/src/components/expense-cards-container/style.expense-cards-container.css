@@ -1,0 +1,72 @@
+.expense-cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.expense-cards-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background-color: #18181B;
+    width: 550px;
+    border: 1px solid #27272A;
+    border-radius: 24px;
+    height: 640px;
+}
+
+.expense-cards-info{
+    display: flex;
+    margin-bottom: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    color: #FFF;
+}
+
+.expense-cards-info h1{
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.expense-cards-info h2{
+    font-size: 16px;
+    opacity: 0.5;
+    font-weight: normal;
+}
+
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+
+#write{
+    width: 256px;
+    height: 256px;
+    opacity: 0.3;
+}
+
+.total-paginator{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hidden{
+    display: none;
+}
+
+.no-expenses{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    align-items: center;
+    text-align: center;
+}
+
+.no-expenses h1{
+    font-size: 20px;
+    opacity: 0.5;
+}

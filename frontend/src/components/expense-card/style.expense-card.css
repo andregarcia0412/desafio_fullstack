@@ -2,13 +2,94 @@
     font-family: 'Inter', sans-serif;
     gap: 10px;
     display: flex;
-    flex-direction: column;
-    height: 250px;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 120px;
     width: 500px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border: 1px solid #777;
-    box-shadow: 0px 0px 16px rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    background: #27272a;
     color: #FFF;
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.texts{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+}
+
+.name-date{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#name{
+    font-size: 18px;
+}
+
+#tag{
+    height: 16px;
+    width: 16px;
+}
+
+#calendar{
+    height: 12px;
+    width: 12px;
+}
+
+#category{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.8;
+    font-size: 14px;
+}
+
+#date{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+#price{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    color: #F87171;
+    font-size: 22px;
+}
+
+#trash{
+    width: 16px;
+    height: 16px;
+}
+
+#remove-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    width: 36px;
+    border: none;
+    border-radius: 8px;
+    background-color: #3F3F46;
+    cursor: pointer;
+    transition: background-color 0.2s linear;
+}
+
+#remove-btn:hover{
+    background-color: #EF4444;
+}
+
+.price-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }

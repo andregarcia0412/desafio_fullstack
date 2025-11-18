@@ -34,7 +34,10 @@ const Form = ({ title, label }) => {
       .then(() => {
         signIn();
       })
-      .catch((e) => setErrorText(e.response.data.message));
+      .catch((e) => {
+        setErrorOcurred(true)
+        setErrorText(e.response.data.message)
+      });
   }
 
   async function signIn() {
@@ -54,7 +57,10 @@ const Form = ({ title, label }) => {
         localStorage.setItem("user_data", JSON.stringify(res.data));
         window.location.href = "/";
       })
-      .catch((e) => setErrorText(e.response.data.message));
+      .catch((e) => {
+        setErrorOcurred(true)
+        setErrorText(e.response.data.message)
+      });
   }
 
   function validateSignInFields() {
@@ -62,17 +68,17 @@ const Form = ({ title, label }) => {
     const password = inputPassword.current.value.trim();
 
     if (!isValidEmail(email)) {
-      return { ok: false, message: "invalid email format" };
+      return { ok: false, message: "Invalid email format" };
     }
 
     if (!password) {
-      return { ok: false, message: "password is required" };
+      return { ok: false, message: "Password is required" };
     }
 
     if (password.length < 8) {
       return {
         ok: false,
-        message: "your password must be at least 8 characters",
+        message: "Your password must be at least 8 characters",
       };
     }
 
@@ -85,21 +91,21 @@ const Form = ({ title, label }) => {
     const password = inputPassword.current.value.trim();
 
     if (!name) {
-      return { ok: false, message: "name is required" };
+      return { ok: false, message: "Name is required" };
     }
 
     if (!isValidEmail(email)) {
-      return { ok: false, message: "invalid email format" };
+      return { ok: false, message: "Invalid email format" };
     }
 
     if (!password) {
-      return { ok: false, message: "password is required" };
+      return { ok: false, message: "Password is required" };
     }
 
     if (password.length < 8) {
       return {
         ok: false,
-        message: "your password must be at least 8 characters",
+        message: "Your password must be at least 8 characters",
       };
     }
 

@@ -1,0 +1,52 @@
+.register-expense-container{
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 400px;
+    background-color: #18181B;
+    border: 1px solid #27272A;
+    border-radius: 12px;
+    padding: 30px;
+    gap: 15px;
+}
+
+
+.register-expense-container h1{
+    color: #FFF;
+    font-size: 18px;
+}
+
+.register-input{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.register-input input, .register-input select{
+    width: 100%;
+    outline: none;
+    height: 30px;
+    border: 1px solid #3F3F46;
+    background-color: #27272A;
+    border-radius: 8px;
+    color: #FFF;
+    padding: 0 10px;
+}
+
+.register-expense-container label{
+    color: #D4D4D8;
+    font-size: 15px;
+}
+
+.register-expense-container button{
+    height: 50px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: opacity 0.2s linear;
+    font-weight: bold;
+}
+
+.register-expense-container button:hover{
+    opacity: 0.8;
+}
