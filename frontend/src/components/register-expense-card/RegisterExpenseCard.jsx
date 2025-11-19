@@ -1,8 +1,27 @@
 import "./style.register-expense-card.css";
 import React from "react";
-import Select from "react-select";
+import CategorySelect from "../../components/select/Select.jsx";
+import Close from "../../assets/close.png";
 
-const RegisterExpenseCard = ({ btnOnClick }) => {
+const RegisterExpenseCard = ({ btnOnClick, onClose }) => {
+  const nameInput = React.useRef();
+  const descriptionInput = React.useRef();
+  const categoryInput = React.useRef();
+  const amountInput = React.useRef();
+  const dateInput = React.useRef();
+  
+  const dateOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+
+  let today = new Date().toISOString().split("T")[0]
+
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  let name, amount, description, date, category;
+
   const selectOptions = [
     { value: "food", label: "Food" },
     { value: "transportation", label: "Transportation" },
@@ -14,132 +33,139 @@ const RegisterExpenseCard = ({ btnOnClick }) => {
     { value: "other", label: "Other" },
   ];
 
-  const selectStyles = {
-    control: (base, state) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      width: "100%",
-      height: "40px",
-      minHeight: "40px",
-      backgroundColor: "#27272A",
-      border: "1px solid #3F3F46",
-      borderRadius: "8px",
-      boxShadow: "none",
-      outline: "none",
-      paddingLeft: "0px",
-      paddingRight: "10px",
-      color: "#FFF",
-      cursor: "pointer",
-      "&:hover": {
-        border: "1px solid #3F3F46",
-      },
-    }),
+  function validateFields() {
+    name = nameInput.current.value.trim();
+    amount = amountInput.current.value.replace(",", ".");
+    description = descriptionInput.current.value.trim();
+    date = dateInput.current.value;
+    category = categoryInput.current.getValue()[0]?.value;
 
-    valueContainer: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      height: "100%",
-      paddingLeft: "10px",
-      paddingTop: 0,
-      paddingBottom: 0,
-    }),
+    if (!name) {
+      return {
+        ok: false,
+        message: "Name is required",
+        culprit: nameInput.current,
+      };
+    }
 
-    singleValue: (base) => ({
-      ...base,
-      padding: 0,
-      margin: 0,
-      color: "#FFF",
-      lineHeight: "normal",
-      transform: "translateY(30px)",
-    }),
+    if (!amount) {
+      return {
+        ok: false,
+        message: "Amount is required",
+        culprit: amountInput.current,
+      };
+    }
+    if (isNaN(Number(amount))) {
+      return {
+        ok: false,
+        message: "Insert a number",
+        culprit: amountInput.current,
+      };
+    }
 
-    placeholder: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      height: "100%",
-      margin: 0,
-      color: "#FFF",
-      opacity: 0.5,
-      textAlign: "left",
-    }),
+    if (amount.length > 10) {
+      return {
+        ok: false,
+        message: "Insert a number smaller than 99999999.99",
+        culprit: amountInput.current,
+      };
+    }
 
-    dropdownIndicator: (base) => ({
-      ...base,
-      color: "#FFF",
-      padding: "0 8px",
-      alignSelf: "center",
-    }),
+    if (Number(amount) < 0) {
+      return {
+        ok: false,
+        message: "Insert a positive number",
+        culprit: amountInput.current,
+      };
+    }
 
-    indicatorSeparator: () => ({
-      display: "none",
-    }),
+    if (!category || categoryInput.current.getValue()[0]?.value == null) {
+      setErrorMessage("Category is required");
+      return {
+        ok: false,
+        message: "Category is required",
+        culprit: categoryInput.current,
+      };
+    }
 
-    menu: (base) => ({
-      ...base,
-      backgroundColor: "#27272A",
-      borderRadius: "8px",
-      overflow: "hidden",
-      zIndex: 10,
-      animation: "fadeSlide 0.15s ease-out",
-    }),
+    if (!description) {
+      description = "";
+    }
 
-    menuList: (base) => ({
-      ...base,
-      paddingTop: 4,
-      paddingBottom: 4,
-    }),
+    if (!date) {
+      return {
+        ok: false,
+        message: "Date is required",
+        culprit: dateInput.current,
+      };
+    }
 
-    option: (base, state) => ({
-      ...base,
-      backgroundColor: state.isSelected
-        ? "#FFF"
-        : state.isFocused
-        ? "#FFF"
-        : "#27272A",
-      color: state.isSelected ? "#000" : state.isFocused ? "#000" : "#FFF",
-      padding: "8px 10px",
-      cursor: "pointer",
-      textAlign: "left",
-    }),
-  };
-
-  let date = new Date().toISOString().split("T")[0];
-
-  const [selected, setSelected] = React.useState(null);
+    return { ok: true };
+  }
 
   return (
     <div className="register-expense-container">
-      <h1>Register New Expense</h1>
-
-      <div className="register-input">
-        <label htmlFor="amount">Amount</label>
-        <input type="text" name="amount" />
+      <div className="register-expense-header">
+        <h1>Register New Expense</h1>
+        <button onClick={onClose}>
+          <img src={Close} />
+        </button>
       </div>
       <div className="register-input">
-        <label htmlFor="category">Category</label>
-        <Select
-          options={selectOptions}
-          value={selected}
-          onChange={(option) => setSelected(option)}
-          placeholder="Select a category"
-          styles={selectStyles}
-          isSearchable={false}
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          name="name"
+          ref={nameInput}
+          placeholder="What is the expense?"
         />
       </div>
       <div className="register-input">
-        <label htmlFor="description">Description</label>
-        <input type="text" name="description" />
+        <label htmlFor="amount">Amount</label>
+        <input type="text" name="amount" ref={amountInput} placeholder="0.00" />
+      </div>
+      <div className="register-input">
+        <label htmlFor="category">Category</label>
+        <CategorySelect
+          options={selectOptions}
+          name="category"
+          ref={categoryInput}
+        />
+      </div>
+      <div className="register-input">
+        <label htmlFor="description">Description (optional)</label>
+        <input
+          type="text"
+          name="description"
+          ref={descriptionInput}
+          placeholder="What was this expense for?"
+        />
       </div>
       <div className="register-input">
         <label htmlFor="date">Date</label>
-        <input type="date" name="date" defaultValue={date} />
+        <input type="date" name="date" defaultValue={today} ref={dateInput} />
       </div>
 
-      <button onClick={btnOnClick}>Add Expense</button>
+      <p style={{ color: "red" }}>{errorMessage}</p>
+
+      <button
+        onClick={() => {
+          const result = validateFields();
+          if (result.ok) {
+            btnOnClick(name, category, description, amount, date);
+            return;
+          } else if (result.culprit != categoryInput.current) {
+            result.culprit.classList.add("shake");
+            setTimeout(() => {
+              result.culprit.classList.remove("shake");
+            }, 500);
+
+            setErrorMessage(result.message);
+          }
+        }}
+      >
+        Add Expense
+      </button>
     </div>
   );
 };

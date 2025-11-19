@@ -1,13 +1,17 @@
 .register-expense-container{
     display: flex;
     flex-direction: column;
-    height: 450px;
+    height: 560px;
     width: 450px;
     background-color: #18181B;
     border: 1px solid #27272A;
     border-radius: 12px;
     padding: 30px;
     gap: 15px;
+
+    & h1{
+        margin-bottom: 10px;
+    }
 }
 
 
@@ -40,11 +44,12 @@
 }
 
 .register-expense-container button{
-    height: 50px;
+    height: 40px;
     border-radius: 50px;
     cursor: pointer;
     transition: opacity 0.2s linear;
     font-weight: bold;
+    font-size: 15px;
 }
 
 .register-expense-container button:hover{
@@ -60,4 +65,46 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes shake{
+    0% {transform: translateX(0)}
+    20% {transform: translateX(-4px)}
+    40% {transform: translateX(4px)}
+    60% {transform: translateX(-4px)}
+    80% {transform: translateX(4px)}
+    100% {transform: translateX(0)}
+}
+
+.shake{
+    animation: shake 0.4s ease-in-out;
+    border: 1px solid red !important; 
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.register-expense-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & img{
+        height: 12px;
+        width: 12px;
+    }
+
+    & button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 12px;
+        height: 12px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
 }

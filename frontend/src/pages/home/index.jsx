@@ -5,20 +5,10 @@ import "./style.css";
 import RegisterExpenseCard from "../../components/register-expense-card/RegisterExpenseCard.jsx";
 
 const Home = ({}) => {
-  const nameInput = React.useRef();
-  const priceInput = React.useRef();
-  const categoryInput = React.useRef();
-  const descriptionInput = React.useRef();
-
+  const [newExpenseIsClosed, setNewExpenseClosed] = React.useState(false);
   const [userExpenses, setUserExpenses] = React.useState([]);
-  const [date, setDate] = React.useState();
 
   const userData = JSON.parse(localStorage.getItem("user_data"))?.user;
-  const dateOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
 
   React.useEffect(() => {
     if (!localStorage.getItem("user_data")) {
@@ -27,21 +17,24 @@ const Home = ({}) => {
     getExpenses();
   }, []);
 
-  async function createExpense() {
-    await api.post("/expense", {
-      name: nameInput.current.value,
-      category: categoryInput.current.value,
-      description: descriptionInput.current.value,
-      amount: Number(priceInput.current.value),
-      user_id: userData.id,
-    });
+  async function createExpense(name, category, description = "", amount, date) {
+    try {
+      await api.post("/expense", {
+        name: name,
+        category: category,
+        description: description,
+        amount: Number(amount),
+        date: date,
+        user_id: userData.id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async function getExpenses() {
     const res = await api.get(`/expense/${userData.id}`);
-    setDate(
-      new Intl.DateTimeFormat("en-us", dateOptions).format(res.data.date)
-    );
+    console.log(res.data);
     setUserExpenses(res.data);
   }
 
@@ -52,34 +45,20 @@ const Home = ({}) => {
 
   return (
     <div>
-      <RegisterExpenseCard
-        btnOnClick={async () => {
-          await createExpense()
-          await getExpenses()
-        }}
-      />
+      <div className={newExpenseIsClosed ? "hidden" : ""}>
+        <RegisterExpenseCard
+          btnOnClick={async (name, category, description, amount, date) => {
+            await createExpense(name, category, description, amount, date);
+            await getExpenses();
+          }}
+          onClose={setNewExpenseClosed}
+        />
+      </div>
 
       <ExpenseCardsContainer
         removeExpense={removeExpense}
         userExpenses={userExpenses}
-        date={date}
       />
-
-      <div>
-        <input placeholder="nome" ref={nameInput}></input>
-        <input placeholder="description" ref={descriptionInput}></input>
-        <input placeholder="category" ref={categoryInput}></input>
-        <input placeholder="price" ref={priceInput}></input>
-        <button
-          type="button"
-          onClick={async () => {
-            await createExpense();
-            await getExpenses();
-          }}
-        >
-          Enviar
-        </button>
-      </div>
     </div>
   );
 };

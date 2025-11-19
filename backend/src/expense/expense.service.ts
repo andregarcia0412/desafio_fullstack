@@ -14,11 +14,7 @@ export class ExpenseService {
   ){}
   
   create(createExpenseDto: CreateExpenseDto) {
-    const expense = {
-      ...createExpenseDto,
-      date: new Date()
-    }
-    return this.expenseRepository.save(expense);
+    return this.expenseRepository.save(createExpenseDto);
   }
 
   findAll() {

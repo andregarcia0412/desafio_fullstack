@@ -2,9 +2,13 @@ import ExpenseCard from "../expense-card/ExpenseCard";
 import "./style.expense-cards-container.css";
 import React from "react";
 import Paginator from "../paginator/Paginator";
-import Write from "../../assets/write.png";
 
-const ExpenseCardsContainer = ({ userExpenses, removeExpense, date }) => {
+const ExpenseCardsContainer = ({ userExpenses, removeExpense }) => {
+  const dateOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
   const [page, setPage] = React.useState(1);
   const perPage = 4;
   const start = (page - 1) * perPage;
@@ -15,19 +19,12 @@ const ExpenseCardsContainer = ({ userExpenses, removeExpense, date }) => {
     <div className="expense-cards-container">
       <div className="expense-cards-info">
         <div
-          className={`title ${
-            userExpenses.length > 0 ? "" : "hidden"
-          }`}
+          className="title"
+          style={userExpenses.length > 0 ? {} : { gap: "186px" }}
         >
-          <h1>
-            {userExpenses.length > 0
-              ? "Recent Expenses"
-              : "You have no expenses"}
-          </h1>
+          <h1>Recent Expenses</h1>
           <div className="total-paginator">
-            <h2>
-              {userExpenses.length > 0 ? `${userExpenses.length} Total` : ""}
-            </h2>
+            <h2>{userExpenses.length} Total</h2>
             <Paginator
               perPage={perPage}
               array={userExpenses}
@@ -36,12 +33,14 @@ const ExpenseCardsContainer = ({ userExpenses, removeExpense, date }) => {
             />
           </div>
         </div>
-        <div className={userExpenses.length > 0 ? "hidden" : "no-expenses"}>
-          <h1>You have no expenses registered, start tracking now!</h1>
-          <img src={Write} id="write"></img>
-        </div>
         <div className="expense-cards">
-          {currentExpenses.map((expense) => (
+          {currentExpenses.map((expense) => {
+            const date = new Date(expense.date)
+            date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
+
+            const formattedDate = new Intl.DateTimeFormat("en-US", dateOptions).format(date)
+            
+            return (
             <ExpenseCard
               key={expense.id}
               name={expense.name}
@@ -49,9 +48,9 @@ const ExpenseCardsContainer = ({ userExpenses, removeExpense, date }) => {
               removeExpense={removeExpense}
               category={expense.category}
               price={expense.amount}
-              date={date}
+              date={formattedDate}
             />
-          ))}
+          )})}
         </div>
       </div>
     </div>

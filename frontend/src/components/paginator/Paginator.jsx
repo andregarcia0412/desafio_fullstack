@@ -1,8 +1,17 @@
+import React from "react";
 import Next from "../../assets/next.png";
 import Previous from "../../assets/previous.png";
 import "./style.paginator.css"
 
 const Paginator = ({perPage, array, setPage, page}) => {
+  const totalPages = Math.ceil(array.length / perPage)
+  React.useEffect(() => {
+    if(page > totalPages){
+      setPage(totalPages > 0 ? totalPages : 1)
+    }
+  }, [array.length])
+
+
   return (
     <div className="paginator">
       <button
