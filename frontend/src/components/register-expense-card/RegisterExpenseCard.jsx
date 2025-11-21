@@ -109,7 +109,7 @@ const RegisterExpenseCard = ({ btnOnClick, onClose, onCloseToast }) => {
     nameInput.current.value = ""
     amountInput.current.value = ""
     descriptionInput.current.value = ""
-    dateInput.current.value = ""
+    dateInput.current.value = today
     setErrorMessage("")
   }
 

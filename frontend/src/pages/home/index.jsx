@@ -9,7 +9,9 @@ import TrendingDown from "../../assets/trending_down.svg";
 import CalendarGreen from "../../assets/calendar_green.svg";
 import HomeHeader from "../../components/home-header/HomeHeader.jsx";
 import Toast from "../../components/toast/Toast.jsx";
-import HomeLogo from "../../components/home-logo/HomeLogo.jsx";
+import BarChartComponent from "../../components/bar-chart/BarChart.jsx";
+import ChartCard from "../../components/chart-card/ChartCard.jsx";
+import LineChartComponent from "../../components/line-chart/LineChart.jsx"
 
 const Home = ({}) => {
   const [newExpenseIsClosed, setNewExpenseClosed] = React.useState(true);
@@ -62,7 +64,6 @@ const Home = ({}) => {
   return (
     <div>
       <HomeHeader btnOnClick={setNewExpenseClosed} />
-      <HomeLogo/>
       {shouldShowToast && (
         <Toast
           text={"Expense Added"}
@@ -71,49 +72,53 @@ const Home = ({}) => {
           setShoulShowToast={setShouldShowToast}
         />
       )}
-      <div className="neon-cards">
-        <NeonCard
-          icon={Money}
-          title={totalSpent.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })}
-          subtitle="Total expenses"
-          color="blue"
-        />
-        <NeonCard
-          icon={TrendingDown}
-          title={userExpenses.length}
-          subtitle="Transactions"
-          color="purple"
-        />
-        <NeonCard
-          icon={CalendarGreen}
-          title={month}
-          subtitle="This month"
-          color="green"
+      <div className="home-container">
+        <div className="neon-cards">
+          <NeonCard
+            icon={Money}
+            title={totalSpent.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+            subtitle="Total expenses"
+            color="blue"
+          />
+          <NeonCard
+            icon={TrendingDown}
+            title={userExpenses.length}
+            subtitle="Transactions"
+            color="purple"
+          />
+          <NeonCard
+            icon={CalendarGreen}
+            title={month}
+            subtitle="This month"
+            color="green"
+          />
+        </div>
+
+        <div className={newExpenseIsClosed ? "hidden" : ""}>
+          <RegisterExpenseCard
+            btnOnClick={async (name, category, description, amount, date) => {
+              await createExpense(name, category, description, amount, date);
+              await getExpenses();
+            }}
+            onClose={setNewExpenseClosed}
+            onCloseToast={() => {
+              setNewExpenseClosed(true);
+              setShouldShowToast(true);
+              setToastVisible(true);
+            }}
+          />
+        </div>
+
+        <ChartCard chart={<BarChartComponent infoArr={userExpenses} />} />
+        <ChartCard chart={<LineChartComponent infoArr={userExpenses} />} />
+        <ExpenseCardsContainer
+          removeExpense={removeExpense}
+          userExpenses={userExpenses}
         />
       </div>
-
-      <div className={newExpenseIsClosed ? "hidden" : ""}>
-        <RegisterExpenseCard
-          btnOnClick={async (name, category, description, amount, date) => {
-            await createExpense(name, category, description, amount, date);
-            await getExpenses();
-          }}
-          onClose={setNewExpenseClosed}
-          onCloseToast={() => {
-            setNewExpenseClosed(true);
-            setShouldShowToast(true);
-            setToastVisible(true)
-          }}
-        />
-      </div>
-
-      <ExpenseCardsContainer
-        removeExpense={removeExpense}
-        userExpenses={userExpenses}
-      />
     </div>
   );
 };

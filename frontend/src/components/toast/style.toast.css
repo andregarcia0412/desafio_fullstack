@@ -12,6 +12,7 @@
     align-items: center;
     z-index: 1;
     border-radius: 6px;
+    margin: 15px;
 
     & p{
         font-size: 16px;

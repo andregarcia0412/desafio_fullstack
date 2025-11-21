@@ -4,7 +4,7 @@ import Logo from "../../assets/wallet.png";
 const HomeLogo = () => {
   return (
     <div className="logo">
-      <div className="icon-container">
+      <div className="logo-icon-container">
         <img src={Logo} />
       </div>
       <div className="logo-title">
