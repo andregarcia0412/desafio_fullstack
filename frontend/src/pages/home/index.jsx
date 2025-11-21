@@ -8,11 +8,15 @@ import Money from "../../assets/money.svg";
 import TrendingDown from "../../assets/trending_down.svg";
 import CalendarGreen from "../../assets/calendar_green.svg";
 import HomeHeader from "../../components/home-header/HomeHeader.jsx";
+import Toast from "../../components/toast/Toast.jsx";
+import HomeLogo from "../../components/home-logo/HomeLogo.jsx";
 
 const Home = ({}) => {
-  const [newExpenseIsClosed, setNewExpenseClosed] = React.useState(false);
+  const [newExpenseIsClosed, setNewExpenseClosed] = React.useState(true);
   const [userExpenses, setUserExpenses] = React.useState([]);
   const [totalSpent, setTotalSpent] = React.useState(0);
+  const [ToastIsVisible, setToastVisible] = React.useState(false);
+  const [shouldShowToast, setShouldShowToast] = React.useState(false);
 
   const userData = JSON.parse(localStorage.getItem("user_data"))?.user;
 
@@ -57,8 +61,16 @@ const Home = ({}) => {
 
   return (
     <div>
-      <HomeHeader btnOnClick={setNewExpenseClosed}/>
-
+      <HomeHeader btnOnClick={setNewExpenseClosed} />
+      <HomeLogo/>
+      {shouldShowToast && (
+        <Toast
+          text={"Expense Added"}
+          isVisible={ToastIsVisible}
+          setVisible={setToastVisible}
+          setShoulShowToast={setShouldShowToast}
+        />
+      )}
       <div className="neon-cards">
         <NeonCard
           icon={Money}
@@ -90,6 +102,11 @@ const Home = ({}) => {
             await getExpenses();
           }}
           onClose={setNewExpenseClosed}
+          onCloseToast={() => {
+            setNewExpenseClosed(true);
+            setShouldShowToast(true);
+            setToastVisible(true)
+          }}
         />
       </div>
 

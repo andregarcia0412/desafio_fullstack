@@ -1,0 +1,12 @@
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+}

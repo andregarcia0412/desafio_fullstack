@@ -3,7 +3,7 @@ import React from "react";
 import CategorySelect from "../../components/select/Select.jsx";
 import Close from "../../assets/close.png";
 
-const RegisterExpenseCard = ({ btnOnClick, onClose }) => {
+const RegisterExpenseCard = ({ btnOnClick, onClose, onCloseToast }) => {
   const nameInput = React.useRef();
   const descriptionInput = React.useRef();
   const categoryInput = React.useRef();
@@ -94,7 +94,23 @@ const RegisterExpenseCard = ({ btnOnClick, onClose }) => {
       };
     }
 
+    if(new Date(date) > new Date()){
+      return {
+        ok: false,
+        message: "Insert a valid date",
+        culprit: dateInput.current,
+      };
+    }
+
     return { ok: true };
+  }
+
+  function clearFields(){
+    nameInput.current.value = ""
+    amountInput.current.value = ""
+    descriptionInput.current.value = ""
+    dateInput.current.value = ""
+    setErrorMessage("")
   }
 
   return (
@@ -102,7 +118,7 @@ const RegisterExpenseCard = ({ btnOnClick, onClose }) => {
       <div className="register-expense-container">
         <div className="register-expense-header">
           <h1>Register New Expense</h1>
-          <button onClick={onClose}>
+          <button onClick={() => {onClose(true)}}>
             <img src={Close} />
           </button>
         </div>
@@ -153,6 +169,8 @@ const RegisterExpenseCard = ({ btnOnClick, onClose }) => {
             const result = validateFields();
             if (result.ok) {
               btnOnClick(name, category, description, amount, date);
+              clearFields()
+              onCloseToast();
               return;
             } else if (result.culprit != categoryInput.current) {
               result.culprit.classList.add("shake");

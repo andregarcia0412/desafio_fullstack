@@ -1,0 +1,67 @@
+.toast{
+    position: fixed;
+    top: 0;
+    left: 100%;
+    opacity: 0;
+    width: 175px;
+    height: 40px;
+    background-color: #4BB543;
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+    border-radius: 6px;
+
+    & p{
+        font-size: 16px;
+        color: #000;
+    }
+
+    & img{
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@keyframes slideLeft{
+    0%{
+        opacity: 0;
+        left: 100%;
+    }
+    100%{
+        opacity: 1;
+        left: 85%;
+    }
+}
+
+@keyframes slideRight{
+    0%{
+        left: 85%;
+        opacity: 1;
+    }
+    100%{
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+.hidden-toast{
+    left: 100%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.shown-toast{
+    left: 85%;
+    opacity: 1;
+}
+
+.show{
+    animation: slideLeft 0.3s ease-in-out forwards;
+    left: 85%;
+}
+
+.hide{
+    animation: slideRight 0.3s ease-in-out forwards;
+}
