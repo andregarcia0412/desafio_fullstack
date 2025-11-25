@@ -22,11 +22,12 @@ const Home = ({}) => {
   const [dailyAvg, setDailyAvg] = React.useState(0);
 
   const userData = JSON.parse(localStorage.getItem("user_data"))?.user;
+  if (!userData) {
+    window.location.href = "/auth";
+    return null;
+  }
 
   React.useEffect(() => {
-    if (!localStorage.getItem("user_data")) {
-      window.location.href = "/auth";
-    }
     getExpenses();
   }, []);
 
@@ -73,14 +74,17 @@ const Home = ({}) => {
     getExpenses();
   }
 
-  async function patchExpense(id, body){
-    await api.patch(`/expense/${id}`, {...body, user_id: userData.id});
+  async function patchExpense(id, body) {
+    await api.patch(`/expense/${id}`, { ...body, user_id: userData.id });
     getExpenses();
   }
 
   return (
     <div>
-      <HomeHeader btnOnClick={() => setNewExpenseClosed(false)} userName={userData.name}/>
+      <HomeHeader
+        btnOnClick={() => setNewExpenseClosed(false)}
+        userName={userData.name}
+      />
       {shouldShowToast && (
         <Toast
           text={"Expense Added"}
@@ -134,8 +138,14 @@ const Home = ({}) => {
 
         <div className="info-wrapper">
           <div className="home-charts">
-            <ChartCard title="Expenses by Category" chart={<BarChartComponent infoArr={userExpenses} />} />
-            <ChartCard title="Expenses Over Time" chart={<LineChartComponent infoArr={userExpenses} />} />
+            <ChartCard
+              title="Expenses by Category"
+              chart={<BarChartComponent infoArr={userExpenses} />}
+            />
+            <ChartCard
+              title="Expenses Over Time"
+              chart={<LineChartComponent infoArr={userExpenses} />}
+            />
           </div>
           <ExpenseCardsContainer
             removeExpense={removeExpense}
