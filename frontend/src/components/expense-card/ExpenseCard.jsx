@@ -65,7 +65,7 @@ const ExpenseCard = ({
         <div className="texts">
           <p id="category">
             <img src={Tag} id="tag" />
-            {category}
+            {category[0].toUpperCase() + category.substring(1)}
           </p>
           <div className="name-date">
             <p id="name">{name}</p>

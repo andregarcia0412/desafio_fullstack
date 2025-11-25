@@ -4,7 +4,14 @@ import React from "react";
 import Paginator from "../paginator/Paginator";
 
 const ExpenseCardsContainer = ({ userExpenses, removeExpense, patchExpense }) => {
-  userExpenses = [...userExpenses].sort((a,b) => new Date(b.date) - new Date(a.date))
+  userExpenses = [...userExpenses].sort((a,b) => {
+    const diff = new Date(b.date) - new Date(a.date)
+    if(diff != 0){
+      return diff
+    }
+
+    return b.id - a.id
+  })
   const [page, setPage] = React.useState(1);
   const perPage = 7;
   const start = (page - 1) * perPage;
