@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "service/api.js", "assets/styles/auth.styles.js"  ]
 }

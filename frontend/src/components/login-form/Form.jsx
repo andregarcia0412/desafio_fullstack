@@ -35,8 +35,8 @@ const Form = ({ title, label }) => {
         signIn();
       })
       .catch((e) => {
-        setErrorOcurred(true)
-        setErrorText(e.response.data.message)
+        setErrorOcurred(true);
+        setErrorText(e.response.data.message);
       });
   }
 
@@ -58,14 +58,18 @@ const Form = ({ title, label }) => {
         window.location.href = "/";
       })
       .catch((e) => {
-        setErrorOcurred(true)
-        setErrorText(e.response.data.message)
+        setErrorOcurred(true);
+        setErrorText(e.response.data.message);
       });
   }
 
   function validateSignInFields() {
     const email = inputEmail.current.value.trim();
     const password = inputPassword.current.value.trim();
+
+    if (!email) {
+      return { ok: false, message: "Email is required" };
+    }
 
     if (!isValidEmail(email)) {
       return { ok: false, message: "Invalid email format" };
@@ -92,6 +96,10 @@ const Form = ({ title, label }) => {
 
     if (!name) {
       return { ok: false, message: "Name is required" };
+    }
+
+    if (!email) {
+      return { ok: false, message: "Email is required" };
     }
 
     if (!isValidEmail(email)) {
@@ -166,9 +174,7 @@ const Form = ({ title, label }) => {
         placeholder="Password"
         ref={inputPassword}
       />
-      <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>
-        {errorText}
-      </p>
+      <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>{errorText}</p>
       <button type="button" onClick={isLoginView ? signIn : createUser}>
         {isLoginView ? "Login" : "Sign Up"}
       </button>
