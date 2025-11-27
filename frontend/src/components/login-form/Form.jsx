@@ -2,6 +2,10 @@ import React from "react";
 import "./style.login-form.css";
 import api from "../../services/api";
 import ViewPassWordButton from "../view-password/ViewPasswordButton";
+import FormControl from "@mui/material/FormControl";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
 
 const Form = ({ title, label }) => {
   const [isLoginView, setLoginView] = React.useState(true);
@@ -9,6 +13,7 @@ const Form = ({ title, label }) => {
   const [errorOcurred, setErrorOcurred] = React.useState(false);
   const [errorText, setErrorText] = React.useState("");
   const [visiblePassword, setVisiblePassword] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
 
   const inputName = React.useRef();
   const inputEmail = React.useRef();
@@ -54,6 +59,7 @@ const Form = ({ title, label }) => {
       .post("/auth/sign-in", {
         email: inputEmail.current.value,
         password: inputPassword.current.value,
+        rememberUser: false,
       })
       .then((res) => {
         localStorage.setItem("user_data", JSON.stringify(res.data));
@@ -164,15 +170,23 @@ const Form = ({ title, label }) => {
         type="text"
         autoComplete="off"
         placeholder="Name"
+        maxLength={32}
         id="name-input"
         ref={inputName}
         className={isLoginView ? "hidden" : ""}
       />
-      <input name="email" type="email" placeholder="Email" ref={inputEmail} />
+      <input
+        name="email"
+        type="email"
+        placeholder="Email"
+        ref={inputEmail}
+        maxLength={100}
+      />
       <div className="password-container">
         <input
           name="password"
           type={visiblePassword ? "text" : "password"}
+          maxLength={32}
           placeholder="Password"
           ref={inputPassword}
         />
@@ -181,7 +195,22 @@ const Form = ({ title, label }) => {
           isVisible={visiblePassword}
         />
       </div>
-
+      <FormControlLabel
+        style={{ width: 175 }}
+        control={
+          <Radio
+            checked={checked}
+            onClick={() => setChecked(!checked)}
+            sx={{
+              color: "#666",
+              "&.Mui-checked": {
+                color: "#FFF",
+              },
+            }}
+          />
+        }
+        label="Remember me?"
+      />
       <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>{errorText}</p>
       <button type="button" onClick={isLoginView ? signIn : createUser}>
         {isLoginView ? "Login" : "Sign Up"}

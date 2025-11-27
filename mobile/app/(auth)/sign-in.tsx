@@ -10,27 +10,36 @@ import { Link } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignInScreen = () => {
-  const [emailText, setEmailText] = React.useState("");
-  const [passwordText, setPasswordText] = React.useState("");
+  const [emailText, setEmailText] = React.useState<string>("");
+  const [passwordText, setPasswordText] = React.useState<string>("");
+  const [wrongEmail, setWrongEmail] = React.useState<boolean>(false);
+  const [wrongPassword, setWrongPassword] = React.useState<boolean>(false);
+  const [wrongMessage, setWrongMessage] = React.useState<string | undefined>(
+    ""
+  );
 
   async function signIn() {
+    let response;
     const result = validateSignInFields();
     if (!result.ok) {
-      console.log(result.message);
+      setWrongMessage(result.message);
       return;
     }
 
     try {
-      const response = await api.post("/auth/sign-in", {
+      response = await api.post("/auth/sign-in", {
         email: emailText,
         password: passwordText,
       });
     } catch (e: any) {
-      console.log(e.response.data.message);
+      setWrongMessage(e.response.data.message);
+      setWrongEmail(false);
+      setWrongPassword(false);
       return;
     }
 
     await AsyncStorage.setItem("user_data", JSON.stringify(response.data));
+    console.log("troca de pagina");
   }
 
   function validateSignInFields() {
@@ -38,21 +47,34 @@ const SignInScreen = () => {
     const password = passwordText.trim();
 
     if (!email) {
+      setWrongEmail(true);
+      setWrongPassword(false);
       return { ok: false, message: "Email is required" };
     }
 
     if (!isValidEmail(email)) {
-      return { ok: false, message: "Invalid email format" };
+      setWrongEmail(true);
+      setWrongPassword(false);
+      return { ok: false, message: "Invalid email format", culprit: "email" };
     }
 
     if (!password) {
-      return { ok: false, message: "Password is required" };
+      setWrongPassword(true);
+      setWrongEmail(false);
+      return {
+        ok: false,
+        message: "Password is required",
+        culprit: "password",
+      };
     }
 
     if (password.length < 8) {
+      setWrongPassword(true);
+      setWrongEmail(false);
       return {
         ok: false,
         message: "Your password must be at least 8 characters",
+        culprit: "password",
       };
     }
 
@@ -89,13 +111,19 @@ const SignInScreen = () => {
             keyboardType={"email-address"}
             text={emailText}
             setText={setEmailText}
+            wrong={wrongEmail}
           />
 
           <PasswordInput
             text={passwordText}
             setText={setPasswordText}
             label="Password"
+            wrong={wrongPassword}
           />
+
+          {wrongMessage && (
+            <Text style={{ color: "#FF0033" }}>{wrongMessage}</Text>
+          )}
         </View>
         <View style={authStyles.radioButtonLinkWrapper}>
           <View style={authStyles.radioButton}>
@@ -103,17 +131,17 @@ const SignInScreen = () => {
             <Text style={{ color: "#999" }}>Remember me</Text>
           </View>
 
-          <Link href="/" style={authStyles.link}>
-            Forgot Password?
+          <Link href="/">
+            <Text style={authStyles.link}>Forgot Password?</Text>
           </Link>
         </View>
-        <LoginButton onPress={signIn} />
+        <LoginButton onPress={signIn} text={"Login"} />
       </View>
 
       <Text style={{ color: "#999" }}>
         Don't have an account?{" "}
-        <Link style={authStyles.link} href="/">
-          Create an account
+        <Link href="/(auth)/sign-up">
+          <Text style={authStyles.link}>Create an account</Text>
         </Link>
       </Text>
     </View>

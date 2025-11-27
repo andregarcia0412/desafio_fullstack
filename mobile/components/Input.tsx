@@ -8,12 +8,13 @@ const Input = ({
   placeholder,
   keyboardType = "default",
   label,
+  wrong,
 }: InputProps) => {
   return (
     <View style={authStyles.inputContainer}>
-      <Text style={{ color: "#999" }}>{label}</Text>
+      <Text style={[ {color: "#999"},  ]}>{label}</Text>
       <TextInput
-        style={authStyles.textInput}
+        style={[authStyles.textInput, wrong && {borderColor: "#FF0033"}]}
         placeholderTextColor={"#666"}
         placeholder={placeholder}
         value={text}
@@ -32,6 +33,7 @@ interface InputProps {
   placeholder: string;
   keyboardType: any;
   label: string;
+  wrong: boolean;
 }
 
 export default Input;

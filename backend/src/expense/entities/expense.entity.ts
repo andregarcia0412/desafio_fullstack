@@ -15,7 +15,7 @@ export class Expense {
     @Column({nullable:true})
     description: string
 
-    @Column("decimal", {precision: 10, scale: 2})
+    @Column({type: "decimal"})
     amount: number
 
     @Column()

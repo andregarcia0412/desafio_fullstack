@@ -14,11 +14,10 @@ export class AuthService {
         private userService: UserService, 
         private jwtService: JwtService,
         private configService: ConfigService
-    ){
-        this.jwtExpirationTimeInSeconds = Number(this.configService.get<number>('JWT_EXPIRATION_TIME'))
-    }
+    ){}
 
     async signIn(signInDto: SignInDto){
+        this.jwtExpirationTimeInSeconds = signInDto.rememberUser ? Number(this.configService.get<number>('JWT_LONG_EXPIRATION_TIME')) : Number(this.configService.get<number>('JWT_EXPIRATION_TIME'))
         const user = await this.userService.findOneByEmail(signInDto.email)
 
         if(!user || !(await bcrypt.compare(signInDto.password, user.password))){            
@@ -26,7 +25,9 @@ export class AuthService {
         }
 
         const payload = {sub: user.id, email: user.email}
-        const token = this.jwtService.sign(payload)
+        const token = this.jwtService.sign(payload, {
+            expiresIn: this.jwtExpirationTimeInSeconds
+        })
 
         return new AuthResponseDto(user, token, this.jwtExpirationTimeInSeconds)
     }

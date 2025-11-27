@@ -7,9 +7,9 @@ const RegisterExpenseCard = ({
   btnOnClick,
   onClose,
   onCloseToast,
-  isEditCard=false,
-  h1Text="Register New Expense",
-  btnText="Add Expense",
+  isEditCard = false,
+  h1Text = "Register New Expense",
+  btnText = "Add Expense",
   placeholders = [
     "What is the expense?",
     "0.00",
@@ -26,7 +26,7 @@ const RegisterExpenseCard = ({
 
   const [errorMessage, setErrorMessage] = React.useState("");
 
-  const today = new Date().toISOString().split("T")[0]
+  const today = new Date().toISOString().split("T")[0];
 
   let name, amount, description, date, category;
 
@@ -71,18 +71,18 @@ const RegisterExpenseCard = ({
       };
     }
 
-    if (amount.length > 10) {
-      return {
-        ok: false,
-        message: "Insert a number smaller than 99999999.99",
-        culprit: amountInput.current,
-      };
-    }
-
     if (Number(amount) < 0) {
       return {
         ok: false,
         message: "Insert a positive number",
+        culprit: amountInput.current,
+      };
+    }
+
+    if (amount[amount.length - 1] === ".") {
+      return {
+        ok: false,
+        message: "Insert a valid number",
         culprit: amountInput.current,
       };
     }
@@ -158,6 +158,7 @@ const RegisterExpenseCard = ({
             ref={amountInput}
             placeholder={placeholders[1]}
             defaultValue={values[1]}
+            maxLength={13}
           />
         </div>
         <div className="register-input">
@@ -182,7 +183,12 @@ const RegisterExpenseCard = ({
         </div>
         <div className="register-input">
           <label htmlFor="date">Date</label>
-          <input type="date" name="date" defaultValue={values[4]} ref={dateInput} />
+          <input
+            type="date"
+            name="date"
+            defaultValue={values[4]}
+            ref={dateInput}
+          />
         </div>
 
         <p style={{ color: "red" }}>{errorMessage}</p>
@@ -191,16 +197,16 @@ const RegisterExpenseCard = ({
           onClick={async () => {
             const result = validateFields();
             if (result.ok) {
-              if(isEditCard){
+              if (isEditCard) {
                 btnOnClick({
                   name,
                   category,
                   description,
                   amount: Number(amount),
-                  date
-                })
-                onClose(true)
-              } else{
+                  date,
+                });
+                onClose(true);
+              } else {
                 btnOnClick(name, category, description, amount, date);
                 onCloseToast();
               }

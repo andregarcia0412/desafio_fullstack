@@ -3,19 +3,29 @@ import React from "react";
 import { TextInput, TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const PasswordInput = ({ text, setText, label }: PasswordInputProps) => {
+const PasswordInput = ({
+  text,
+  setText,
+  label,
+  wrong,
+  placeholder = "Enter your password",
+}: PasswordInputProps) => {
   const [isVisible, setVisible] = React.useState(false);
 
   return (
-    <View style={[authStyles.passwordInput, authStyles.inputContainer]}>
+    <View style={[authStyles.passwordContainer, authStyles.inputContainer]}>
       <Text style={{ color: "#999" }}>{label}</Text>
       <TextInput
-        style={authStyles.textInput}
-        placeholder="Enter your password"
+        style={[
+          authStyles.textInput,
+          wrong && { borderColor: "#FF0033" },
+          authStyles.passwordInput,
+        ]}
+        placeholder={placeholder}
         placeholderTextColor={"#666"}
         value={text}
         onChangeText={setText}
-        secureTextEntry={isVisible}
+        secureTextEntry={!isVisible}
         cursorColor="#666"
         autoCapitalize="none"
       />
@@ -24,7 +34,7 @@ const PasswordInput = ({ text, setText, label }: PasswordInputProps) => {
         onPress={() => setVisible(!isVisible)}
       >
         <Ionicons
-          name={isVisible ? "eye-outline" : "eye-off-outline"}
+          name={isVisible ? "eye-off-outline" : "eye-outline"}
           size={20}
           color={"#666"}
         />
@@ -37,6 +47,8 @@ interface PasswordInputProps {
   text: string;
   setText: (text: string) => void;
   label: string;
+  wrong: boolean;
+  placeholder: string;
 }
 
 export default PasswordInput;

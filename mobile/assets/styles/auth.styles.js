@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
 
     inputsWrapper:{
-        gap:28,
+        gap:20,
     },
 
     inputContainer:{
@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
     },
 
     passwordInput: {
+        paddingRight: 52
+    },
+
+    passwordContainer: {
         position: "relative",
         width: 330,
         justifyContent: "center",
@@ -61,8 +65,6 @@ const styles = StyleSheet.create({
     },
 
     title:{
-        position: "absolute",
-        top: 100,
         alignItems:"left",
         width:"86%",
     },
