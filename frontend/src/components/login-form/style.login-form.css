@@ -116,3 +116,15 @@ form.form-init{
 .hidden{
   display: none;
 }
+
+.password-container{
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+  & input{
+    width: 100%;
+    padding-right: 50px;
+  }
+}

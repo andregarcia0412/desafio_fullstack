@@ -1,12 +1,14 @@
 import React from "react";
 import "./style.login-form.css";
 import api from "../../services/api";
+import ViewPassWordButton from "../view-password/ViewPasswordButton";
 
 const Form = ({ title, label }) => {
   const [isLoginView, setLoginView] = React.useState(true);
   const [isLoaded, setLoaded] = React.useState(false);
   const [errorOcurred, setErrorOcurred] = React.useState(false);
   const [errorText, setErrorText] = React.useState("");
+  const [visiblePassword, setVisiblePassword] = React.useState(false);
 
   const inputName = React.useRef();
   const inputEmail = React.useRef();
@@ -157,7 +159,6 @@ const Form = ({ title, label }) => {
           Sign-Up
         </button>
       </div>
-
       <input
         name="name"
         type="text"
@@ -168,12 +169,19 @@ const Form = ({ title, label }) => {
         className={isLoginView ? "hidden" : ""}
       />
       <input name="email" type="email" placeholder="Email" ref={inputEmail} />
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        ref={inputPassword}
-      />
+      <div className="password-container">
+        <input
+          name="password"
+          type={visiblePassword ? "text" : "password"}
+          placeholder="Password"
+          ref={inputPassword}
+        />
+        <ViewPassWordButton
+          setVisible={setVisiblePassword}
+          isVisible={visiblePassword}
+        />
+      </div>
+
       <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>{errorText}</p>
       <button type="button" onClick={isLoginView ? signIn : createUser}>
         {isLoginView ? "Login" : "Sign Up"}
