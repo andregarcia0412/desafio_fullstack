@@ -17,6 +17,7 @@ const SignInScreen = () => {
   const [wrongMessage, setWrongMessage] = React.useState<string | undefined>(
     ""
   );
+  const [checkedRadio, setCheckedRadio] = React.useState(false);
 
   async function signIn() {
     let response;
@@ -30,6 +31,7 @@ const SignInScreen = () => {
       response = await api.post("/auth/sign-in", {
         email: emailText,
         password: passwordText,
+        rememberUser: checkedRadio,
       });
     } catch (e: any) {
       setWrongMessage(e.response.data.message);
@@ -127,7 +129,7 @@ const SignInScreen = () => {
         </View>
         <View style={authStyles.radioButtonLinkWrapper}>
           <View style={authStyles.radioButton}>
-            <Radio />
+            <Radio setChecked={setCheckedRadio} checked={checkedRadio} />
             <Text style={{ color: "#999" }}>Remember me</Text>
           </View>
 

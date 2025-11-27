@@ -1,10 +1,8 @@
 import { RadioButton } from "react-native-paper";
 import React from "react";
-import { GestureResponderEvent, View } from "react-native";
+import { View } from "react-native";
 
-const Radio = () => {
-  const [checked, setChecked] = React.useState(false);
-
+const Radio = ({ checked, setChecked }: RadioProps) => {
   return (
     <View style={{ width: 30, alignItems: "center" }}>
       <RadioButton
@@ -16,5 +14,10 @@ const Radio = () => {
     </View>
   );
 };
+
+interface RadioProps {
+  checked: boolean;
+  setChecked: (checked: boolean) => void;
+}
 
 export default Radio;
