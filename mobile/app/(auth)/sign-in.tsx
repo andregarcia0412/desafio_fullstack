@@ -41,7 +41,6 @@ const SignInScreen = () => {
     }
 
     await AsyncStorage.setItem("user_data", JSON.stringify(response.data));
-    console.log("troca de pagina");
   }
 
   function validateSignInFields() {
