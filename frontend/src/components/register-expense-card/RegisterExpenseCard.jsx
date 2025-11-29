@@ -24,22 +24,42 @@ const RegisterExpenseCard = ({
   const amountInput = React.useRef();
   const dateInput = React.useRef();
 
+  const [amountInputValue, setAmountInputValue] = React.useState(null);
+
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const today = new Date().toISOString().split("T")[0];
 
   let name, amount, description, date, category;
 
+  const validationRegex = /^[\p{L}\p{N}\x20-\x7E]+$/u;
+
   const selectOptions = [
     { value: "food", label: "Food" },
     { value: "transportation", label: "Transportation" },
     { value: "entertainment", label: "Entertainment" },
     { value: "utilities", label: "Utilities" },
-    { value: "rent", label: "Rent" },
-    { value: "healthcare", label: "Healthcare" },
+    { value: "housing", label: "Housing" },
+    { value: "health", label: "Health" },
     { value: "shopping", label: "Shopping" },
+    { value: "pets", label: "Pets" },
+    { value: "personal", label: "Personal" },
+    { value: "debt", label: "Debt" },
+    { value: "bills", label: "Bills" },
+    { value: "education", label: "Education" },
+    { value: "investments", label: "Investments" },
+    { value: "work", label: "Work" },
     { value: "other", label: "Other" },
   ];
+
+  function handleAmountInputChange(e) {
+    let value = e.target.value;
+    value = value.replace(/[^\d.,]/g, "");
+
+    value = value.replace(/(\.\d{2})\d+$/, "$1");
+
+    setAmountInputValue(value);
+  }
 
   function validateFields() {
     name = nameInput.current.value.trim();
@@ -52,6 +72,14 @@ const RegisterExpenseCard = ({
       return {
         ok: false,
         message: "Name is required",
+        culprit: nameInput.current,
+      };
+    }
+
+    if (!validationRegex.test(name)) {
+      return {
+        ok: false,
+        message: "Insert only letters, symbols and numbers",
         culprit: nameInput.current,
       };
     }
@@ -100,6 +128,14 @@ const RegisterExpenseCard = ({
       description = "";
     }
 
+    if (!validationRegex.test(description)) {
+      return {
+        ok: false,
+        message: "Insert only letters, symbols and numbers",
+        culprit: descriptionInput.current,
+      };
+    }
+
     if (!date) {
       return {
         ok: false,
@@ -108,7 +144,10 @@ const RegisterExpenseCard = ({
       };
     }
 
-    if (new Date(date) > new Date() || new Date(date) < new Date().setFullYear(2000)) {
+    if (
+      new Date(date) > new Date() ||
+      new Date(date) < new Date().setFullYear(2000)
+    ) {
       return {
         ok: false,
         message: "Insert a valid date",
@@ -148,6 +187,7 @@ const RegisterExpenseCard = ({
             ref={nameInput}
             placeholder={placeholders[0]}
             defaultValue={values[0]}
+            autoComplete="off"
           />
         </div>
         <div className="register-input">
@@ -156,9 +196,11 @@ const RegisterExpenseCard = ({
             type="text"
             name="amount"
             ref={amountInput}
+            onChange={handleAmountInputChange}
+            value={amountInputValue}
             placeholder={placeholders[1]}
-            defaultValue={values[1]}
             maxLength={13}
+            autoComplete="off"
           />
         </div>
         <div className="register-input">
@@ -179,6 +221,7 @@ const RegisterExpenseCard = ({
             ref={descriptionInput}
             placeholder={placeholders[3]}
             defaultValue={values[3]}
+            autoComplete="off"
           />
         </div>
         <div className="register-input">

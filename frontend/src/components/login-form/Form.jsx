@@ -17,6 +17,8 @@ const Form = ({ title, label }) => {
   const inputEmail = React.useRef();
   const inputPassword = React.useRef();
 
+  const validationRegex = /^[\p{L}\p{N}\x20-\x7E]+$/u;
+
   React.useEffect(() => {
     setLoaded(true);
   }, []);
@@ -104,6 +106,13 @@ const Form = ({ title, label }) => {
       return { ok: false, message: "Name is required" };
     }
 
+    if (!validationRegex.test(name)) {
+      return {
+        ok: false,
+        message: "Insert only letters, numbers and symbols",
+      };
+    }
+
     if (!email) {
       return { ok: false, message: "Email is required" };
     }
@@ -114,6 +123,13 @@ const Form = ({ title, label }) => {
 
     if (!password) {
       return { ok: false, message: "Password is required" };
+    }
+
+    if(!validationRegex.test(password)){
+      return {
+        ok: false,
+        message: "Insert only letters, numbers and symbols"
+      }
     }
 
     if (password.length < 8) {
@@ -215,9 +231,11 @@ const Form = ({ title, label }) => {
             },
           }}
         />
-        {isLoginView && <a href="/forgot-password" className="forgot-password">
-          Forgot your password?
-        </a>}
+        {isLoginView && (
+          <a href="/forgot-password" className="forgot-password">
+            Forgot your password?
+          </a>
+        )}
       </div>
       <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>{errorText}</p>
       <button type="button" onClick={isLoginView ? signIn : createUser}>

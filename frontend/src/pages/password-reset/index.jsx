@@ -15,6 +15,8 @@ const ResetPassword = ({}) => {
     React.useState(true);
   const [success, setSuccess] = React.useState(false);
 
+  const validationRegex = /^[\p{L}\p{N}\x20-\x7E]+$/u;
+
   async function resetPassword() {
     const token = searchParams.get("token");
     if (!token) {
@@ -39,8 +41,8 @@ const ResetPassword = ({}) => {
       setSuccess(true);
 
       setTimeout(() => {
-        window.location.href="/auth"
-      }, 1500)
+        window.location.href = "/auth";
+      }, 1500);
     } catch (e) {
       setResultText(e.response.data.message);
       setSuccess(false);
@@ -53,6 +55,10 @@ const ResetPassword = ({}) => {
 
     if (!password) {
       return { ok: false, message: "Password is required" };
+    }
+
+    if (!validationRegex.test(password)) {
+      return { ok: false, message: "Insert only letters, numbers and symbols" };
     }
 
     if (password.length < 8) {
@@ -78,9 +84,11 @@ const ResetPassword = ({}) => {
         <h1>Password reset</h1>
         <div className="password-container" style={{ width: "100%" }}>
           <input
+            style={{ paddingRight: 70 }}
             placeholder="New password"
             type={!hiddenPassword ? "text" : "password"}
             ref={passwordInput}
+            maxLength={32}
           />
           <ViewPasswordButton
             isVisible={hiddenPassword}
@@ -90,9 +98,11 @@ const ResetPassword = ({}) => {
 
         <div className="password-container" style={{ width: "100%" }}>
           <input
+            style={{ paddingRight: 70 }}
             placeholder="Confirm new password"
             type={!hiddenConfirmPassword ? "text" : "password"}
             ref={confirmPasswordInput}
+            maxLength={32}
           />
           <ViewPasswordButton
             isVisible={hiddenConfirmPassword}

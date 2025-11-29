@@ -10,16 +10,16 @@ const ForgotPassword = ({}) => {
   const [success, setSuccess] = React.useState(true);
 
   async function sendEmail() {
-    if(isLoading){
-      return
+    if (isLoading) {
+      return;
     }
-    console.log("enviado")
+    console.log("enviado");
     setLoading(true);
-
 
     if (!isValidEmail(emailInput.current.value.trim())) {
       setSuccess(false);
       setResultText("Insert a valid email");
+      setLoading(false);
       return;
     }
 
@@ -53,7 +53,12 @@ const ForgotPassword = ({}) => {
     <div className="forgot-password-container">
       <div className="forgot-password-card">
         <h1>Password recovery</h1>
-        <input placeholder="Email" type="email" ref={emailInput}></input>
+        <input
+          placeholder="Email"
+          type="email"
+          ref={emailInput}
+          maxLength={100}
+        />
         <Button
           text={"Send"}
           width={"100%"}
