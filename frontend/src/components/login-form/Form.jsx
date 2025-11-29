@@ -2,8 +2,6 @@ import React from "react";
 import "./style.login-form.css";
 import api from "../../services/api";
 import ViewPassWordButton from "../view-password/ViewPasswordButton";
-import FormControl from "@mui/material/FormControl";
-import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 
@@ -195,22 +193,32 @@ const Form = ({ title, label }) => {
           isVisible={visiblePassword}
         />
       </div>
-      <FormControlLabel
-        style={{ width: 175 }}
-        control={
-          <Radio
-            checked={checked}
-            onClick={() => setChecked(!checked)}
-            sx={{
-              color: "#666",
-              "&.Mui-checked": {
-                color: "#FFF",
-              },
-            }}
-          />
-        }
-        label="Remember me?"
-      />
+      <div className="additional-commands">
+        <FormControlLabel
+          style={{ width: 175 }}
+          control={
+            <Radio
+              checked={checked}
+              onClick={() => setChecked(!checked)}
+              sx={{
+                color: "#666",
+                "&.Mui-checked": {
+                  color: "#FFF",
+                },
+              }}
+            />
+          }
+          label="Remember me?"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: 14,
+            },
+          }}
+        />
+        {isLoginView && <a href="/forgot-password" className="forgot-password">
+          Forgot your password?
+        </a>}
+      </div>
       <p className={`errorP ${errorOcurred ? "" : "hidden"}`}>{errorText}</p>
       <button type="button" onClick={isLoginView ? signIn : createUser}>
         {isLoginView ? "Login" : "Sign Up"}

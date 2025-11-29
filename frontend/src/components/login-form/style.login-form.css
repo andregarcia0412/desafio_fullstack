@@ -128,3 +128,19 @@ form.form-init{
     padding-right: 50px;
   }
 }
+
+.additional-commands{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-password{
+  font-size: 14px;
+  color: #FFF;
+  text-decoration: none;
+}
+
+.forgot-password:hover{
+  text-decoration: underline;
+}

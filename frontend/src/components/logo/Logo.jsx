@@ -15,7 +15,7 @@ const Logo = ({}) => {
             <div className={'icon-container'}>
                 <img src={Wallet} alt="wallet-icon"/>
             </div>
-            <h1>Appzinho Legal</h1>
+            <h1>LookUp</h1>
         </div>
     )
 }

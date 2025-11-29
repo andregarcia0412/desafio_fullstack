@@ -83,7 +83,6 @@ const Home = ({}) => {
     <div>
       <HomeHeader
         btnOnClick={() => setNewExpenseClosed(false)}
-        userName={userData.name}
       />
       {shouldShowToast && (
         <Toast
