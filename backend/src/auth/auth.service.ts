@@ -106,7 +106,15 @@ export class AuthService {
       throw new NotFoundException();
     }
 
+    const passwordMatch = await bcrypt.compare(newPassword, user.password)
+
+    if(passwordMatch){
+      throw new BadRequestException("The new password cannot be the same as the previous password")
+    }
+    
     user.password = await bcrypt.hash(newPassword, 10);
     await this.userService.update(user.id, {password: user.password})
+
+    await this.resetTokenRepository.delete({id: token.id})
   }
 }

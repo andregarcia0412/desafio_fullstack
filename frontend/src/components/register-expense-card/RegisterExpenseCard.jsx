@@ -108,7 +108,7 @@ const RegisterExpenseCard = ({
       };
     }
 
-    if (new Date(date) > new Date()) {
+    if (new Date(date) > new Date() || new Date(date) < new Date().setFullYear(2000)) {
       return {
         ok: false,
         message: "Insert a valid date",

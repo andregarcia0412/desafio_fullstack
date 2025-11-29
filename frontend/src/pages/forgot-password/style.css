@@ -1,0 +1,74 @@
+.forgot-password-container {
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    radial-gradient(
+      circle at 20% 25%,
+      rgba(255, 255, 225, 0.1),
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 80% 45%,
+      rgba(255, 255, 255, 0.1),
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 55% 70%,
+      rgba(255, 255, 255, 0.1),
+      transparent 20%
+    );
+  background-size: 60px 60px, 60px 60px, 100% 100%, 100% 100%, 100% 100%;
+  background-blend-mode: screen;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & input {
+    width: 100%;
+    padding: 12px 20px;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 16px;
+  }
+
+  & p {
+    text-align: center;
+    font-size: 18px;
+  }
+
+}
+
+.forgot-password-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.1);
+  max-width: 50%;
+  width: 500px;
+  height: 500px;
+  margin-bottom: 20px;
+  border: 1px solid #777;
+  box-shadow: 0px 0px 16px rgba(255, 255, 255, 0.2);
+  margin-top: 70px;
+
+  & h1{
+    position: absolute;
+    top: 5%;
+  }
+}
