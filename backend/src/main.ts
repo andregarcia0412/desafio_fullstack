@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({origin:"desafio-fullstack-beryl.vercel.app"})
+  app.enableCors({origin:"https://desafio-fullstack-beryl.vercel.app"})
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,

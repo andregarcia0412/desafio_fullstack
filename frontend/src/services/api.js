@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://desafiofullstack-production.up.railway.app:3000",
+  baseURL: "https://desafiofullstack-production.up.railway.app",
 });
 
 api.interceptors.request.use((config) => {
