@@ -93,11 +93,24 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.title}>
-        <Text style={{ color: "#999" }}>Welcome Back,</Text>
-        <Text style={{ color: "#FFF", fontSize: 24, fontWeight: "bold" }}>
-          {userName}
-        </Text>
+      <View style={styles.header}>
+        <View style={styles.title}>
+          <Text style={{ color: "#999" }}>Welcome Back,</Text>
+          <Text style={{ color: "#FFF", fontSize: 24, fontWeight: "bold" }}>
+            {userName}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.logout}
+          activeOpacity={0.7}
+          onPress={async () => {
+            await AsyncStorage.clear();
+            router.push("/(auth)");
+          }}
+        >
+          <Text>Logout</Text>
+        </TouchableOpacity>
       </View>
 
       <Card>
@@ -110,21 +123,15 @@ const Home = () => {
         </Text>
       </Card>
 
-      <TouchableOpacity activeOpacity={0.7} style={styles.registerExpense}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.registerExpense}
+        onPress={() => router.push("/register-expense")}
+      >
         <PlusIcon />
         <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 16 }}>
           Register expense
         </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={{ backgroundColor: "#FFF" }}
-        onPress={async () => {
-          await AsyncStorage.clear();
-          router.push("/(auth)");
-        }}
-      >
-        <Text>Logout</Text>
       </TouchableOpacity>
 
       {userExpenses && <RecentTransactions expenses={userExpenses} />}

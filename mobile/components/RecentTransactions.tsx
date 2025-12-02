@@ -88,7 +88,7 @@ const RecentTransactions = (props: RecentTransactionProps) => {
   }
 
   function getLimitedExpenses(): ExpenseList {
-    return sortByDate(props.expenses).slice(0, 4);
+    return sortByDate(props.expenses).slice(0, 5);
   }
 
   function sortByDate(expenses: ExpenseList): ExpenseList {
@@ -98,7 +98,7 @@ const RecentTransactions = (props: RecentTransactionProps) => {
   }
 
   return (
-    <View style={{ gap: 20 }}>
+    <View style={{ gap: 20, height:400 }}>
       <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 18 }}>
         Recent Transactions
       </Text>

@@ -72,7 +72,20 @@ const styles = StyleSheet.create({
   expenseCards:{
     alignItems:"center",
     justifyContent:"center",
-    gap:10
+    gap:20
+  },
+
+  header:{
+    alignItems:"center",
+    justifyContent:"space-between",
+    flexDirection:"row",
+    width:"100%",
+  },
+
+  logout:{
+    backgroundColor:"#FFF",
+    borderRadius:24,
+    padding:10,
   }
 });
 
