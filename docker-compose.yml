@@ -7,13 +7,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: desafio_fullstack_db
-    ports: 
+    ports:
       - "5433:5432"
     volumes:
       - db_data:/var/lib/postgres/data
     networks:
       - app_network
-  
+
   backend:
     build: ./backend
     container_name: desafio_fullstack_backend
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-  
+
   frontend:
     build: ./frontend
     container_name: desafio_fullstack_frontend
