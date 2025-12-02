@@ -1,13 +1,20 @@
-import authStyles from "@/assets/styles/auth.styles";
+import styles from "@/assets/styles/auth.styles";
 import Input from "@/components/Input";
 import api from "@/service/api";
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React from "react";
 import PasswordInput from "@/components/PasswordInput";
 import LoginButton from "../../components/LoginButton";
 import Radio from "@/components/Radio";
 import { Link, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = () => {
   const [emailText, setEmailText] = React.useState<string>("");
@@ -41,7 +48,7 @@ const SignInScreen = () => {
     }
 
     await AsyncStorage.setItem("user_data", JSON.stringify(response.data));
-    router.push("/home");
+    router.replace("/home");
   }
 
   function validateSignInFields() {
@@ -95,58 +102,69 @@ const SignInScreen = () => {
   }
 
   return (
-    <View style={authStyles.container}>
-      <View style={authStyles.title}>
-        <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 32 }}>
-          Welcome Back
-        </Text>
-        <Text style={{ color: "#999" }}>
-          Login to register your daily expenses
-        </Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+            <View style={styles.title}>
+              <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 32 }}>
+                Welcome Back
+              </Text>
+              <Text style={{ color: "#999" }}>
+                Login to register your daily expenses
+              </Text>
+            </View>
 
-      <View style={authStyles.formWrapper}>
-        <View style={authStyles.inputsWrapper}>
-          <Input
-            label="Email"
-            placeholder="Enter your email"
-            keyboardType={"email-address"}
-            text={emailText}
-            setText={setEmailText}
-            wrong={wrongEmail}
-          />
+            <View style={styles.formWrapper}>
+              <View style={styles.inputsWrapper}>
+                <Input
+                  label="Email"
+                  placeholder="Enter your email"
+                  keyboardType={"email-address"}
+                  text={emailText}
+                  setText={setEmailText}
+                  wrong={wrongEmail}
+                  maxLength={100}
+                />
 
-          <PasswordInput
-            text={passwordText}
-            setText={setPasswordText}
-            label="Password"
-            wrong={wrongPassword}
-          />
+                <PasswordInput
+                  text={passwordText}
+                  setText={setPasswordText}
+                  label="Password"
+                  wrong={wrongPassword}
+                  maxLength={32}
+                />
 
-          {wrongMessage && (
-            <Text style={{ color: "#FF0033" }}>{wrongMessage}</Text>
-          )}
-        </View>
-        <View style={authStyles.radioButtonLinkWrapper}>
-          <View style={authStyles.radioButton}>
-            <Radio setChecked={setCheckedRadio} checked={checkedRadio} />
-            <Text style={{ color: "#999" }}>Remember me</Text>
+                {wrongMessage && (
+                  <Text style={{ color: "#FF0033" }}>{wrongMessage}</Text>
+                )}
+              </View>
+              <View style={styles.radioButtonLinkWrapper}>
+                <View style={styles.radioButton}>
+                  <Radio setChecked={setCheckedRadio} checked={checkedRadio} />
+                  <Text style={{ color: "#999" }}>Remember me</Text>
+                </View>
+
+                <Link href="/">
+                  <Text style={styles.link}>Forgot Password?</Text>
+                </Link>
+              </View>
+              <LoginButton onPress={signIn} text={"Login"} />
+            </View>
+
+            <Text style={{ color: "#999" }}>
+              Don't have an account?{" "}
+              <Link href="/(auth)/sign-up">
+                <Text style={styles.link}>Create an account</Text>
+              </Link>
+            </Text>
           </View>
-
-          <Link href="/">
-            <Text style={authStyles.link}>Forgot Password?</Text>
-          </Link>
-        </View>
-        <LoginButton onPress={signIn} text={"Login"} />
-      </View>
-
-      <Text style={{ color: "#999" }}>
-        Don't have an account?{" "}
-        <Link href="/(auth)/sign-up">
-          <Text style={authStyles.link}>Create an account</Text>
-        </Link>
-      </Text>
-    </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

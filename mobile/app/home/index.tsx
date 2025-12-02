@@ -48,16 +48,21 @@ const Home = () => {
       );
 
       if (!userDataString) {
-        router.push("/(auth)");
+        router.replace("/(auth)");
         return;
       }
 
       setUserData(JSON.parse(userDataString));
+      setUserName(JSON.parse(userDataString).user.name);
+
+      return JSON.parse(userDataString);
     }
 
     async function init() {
-      await getUserData();
-      await getExpenses();
+      const data = await getUserData();
+      if (data && data.user && data.user.id) {
+        await getExpenses(data.user.id);
+      }
       setLoading(false);
     }
 
@@ -70,18 +75,17 @@ const Home = () => {
         router.push("/(auth)");
         return;
       }
-      setUserName(userData.user.name);
     }
   }, [userData]);
 
   React.useEffect(() => {
     if (!loading) {
-      console.log(userExpenses);
+      setUserExpenses(userExpenses);
     }
   }, [userExpenses]);
 
-  async function getExpenses() {
-    const response = await api.get("/expense");
+  async function getExpenses(userId: string) {
+    const response = await api.get(`/expense/${userId}`);
     let sum = 0;
     for (let i = 0; i < response.data.length; i++) {
       sum += Number(response.data[i].amount);
@@ -106,7 +110,7 @@ const Home = () => {
           activeOpacity={0.7}
           onPress={async () => {
             await AsyncStorage.clear();
-            router.push("/(auth)");
+            router.replace("/(auth)");
           }}
         >
           <Text>Logout</Text>

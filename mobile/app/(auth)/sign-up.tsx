@@ -1,13 +1,20 @@
-import authStyles from "@/assets/styles/auth.styles";
+import styles from "@/assets/styles/auth.styles";
 import Input from "@/components/Input";
 import api from "@/service/api";
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React from "react";
 import PasswordInput from "@/components/PasswordInput";
 import LoginButton from "../../components/LoginButton";
 import Radio from "@/components/Radio";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignUpScreen = () => {
   const [nameText, setNameText] = React.useState<string>("");
@@ -44,6 +51,7 @@ const SignUpScreen = () => {
     }
 
     await AsyncStorage.setItem("user_data", JSON.stringify(response.data));
+    router.replace("/home");
   }
 
   async function createAccount() {
@@ -145,71 +153,85 @@ const SignUpScreen = () => {
   }
 
   return (
-    <View style={authStyles.container}>
-      <View style={authStyles.title}>
-        <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 32 }}>
-          Create Account
-        </Text>
-        <Text style={{ color: "#999" }}>Join us to manage your finances</Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+            <View style={styles.title}>
+              <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 32 }}>
+                Create Account
+              </Text>
+              <Text style={{ color: "#999" }}>
+                Join us to manage your finances
+              </Text>
+            </View>
 
-      <View style={authStyles.formWrapper}>
-        <View style={authStyles.inputsWrapper}>
-          <Input
-            label="Name"
-            placeholder="Enter your name"
-            text={nameText}
-            setText={setNameText}
-            wrong={wrongName}
-          />
+            <View style={styles.formWrapper}>
+              <View style={styles.inputsWrapper}>
+                <Input
+                  label="Name"
+                  placeholder="Enter your name"
+                  text={nameText}
+                  setText={setNameText}
+                  wrong={wrongName}
+                  maxLength={32}
+                />
 
-          <Input
-            label="Email"
-            placeholder="Enter your email"
-            keyboardType={"email-address"}
-            text={emailText}
-            setText={setEmailText}
-            wrong={wrongEmail}
-          />
+                <Input
+                  label="Email"
+                  placeholder="Enter your email"
+                  keyboardType={"email-address"}
+                  text={emailText}
+                  setText={setEmailText}
+                  wrong={wrongEmail}
+                  maxLength={100}
+                />
 
-          <PasswordInput
-            text={passwordText}
-            setText={setPasswordText}
-            label="Password"
-            wrong={wrongPassword}
-          />
+                <PasswordInput
+                  text={passwordText}
+                  setText={setPasswordText}
+                  label="Password"
+                  wrong={wrongPassword}
+                  maxLength={32}
+                />
 
-          <PasswordInput
-            text={confirmPasswordText}
-            setText={setConfirmPasswordText}
-            label="Confirm password"
-            placeholder={"Confirm your password"}
-            wrong={wrongConfirmPassword}
-          />
+                <PasswordInput
+                  text={confirmPasswordText}
+                  setText={setConfirmPasswordText}
+                  label="Confirm password"
+                  placeholder={"Confirm your password"}
+                  wrong={wrongConfirmPassword}
+                  maxLength={32}
+                />
 
-          {wrongMessage && (
-            <Text style={{ color: "#FF0033" }}>{wrongMessage}</Text>
-          )}
-        </View>
-        <View style={authStyles.radioButtonLinkWrapper}>
-          <View style={authStyles.radioButton}>
-            <Radio
-              setChecked={() => setCheckedRadio(!checkedRadio)}
-              checked={checkedRadio}
-            />
-            <Text style={{ color: "#999" }}>Remember me</Text>
+                {wrongMessage && (
+                  <Text style={{ color: "#FF0033" }}>{wrongMessage}</Text>
+                )}
+              </View>
+              <View style={styles.radioButtonLinkWrapper}>
+                <View style={styles.radioButton}>
+                  <Radio
+                    setChecked={() => setCheckedRadio(!checkedRadio)}
+                    checked={checkedRadio}
+                  />
+                  <Text style={{ color: "#999" }}>Remember me</Text>
+                </View>
+              </View>
+              <LoginButton text={"Sign Up"} onPress={createAccount} />
+            </View>
+
+            <Text style={{ color: "#999" }}>
+              Don't have an account?{" "}
+              <Link href="/">
+                <Text style={styles.link}>Login</Text>
+              </Link>
+            </Text>
           </View>
-        </View>
-        <LoginButton text={"Sign Up"} onPress={createAccount} />
-      </View>
-
-      <Text style={{ color: "#999" }}>
-        Don't have an account?{" "}
-        <Link href="/">
-          <Text style={authStyles.link}>Login</Text>
-        </Link>
-      </Text>
-    </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

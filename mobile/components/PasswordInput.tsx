@@ -9,6 +9,7 @@ const PasswordInput = ({
   label,
   wrong,
   placeholder = "Enter your password",
+  maxLength,
 }: PasswordInputProps) => {
   const [isVisible, setVisible] = React.useState(false);
 
@@ -20,6 +21,7 @@ const PasswordInput = ({
           authStyles.textInput,
           wrong && { borderColor: "#FF0033" },
           authStyles.passwordInput,
+          { textAlignVertical: "center", paddingVertical: 0 },
         ]}
         placeholder={placeholder}
         placeholderTextColor={"#666"}
@@ -28,6 +30,8 @@ const PasswordInput = ({
         secureTextEntry={!isVisible}
         cursorColor="#666"
         autoCapitalize="none"
+        maxLength={32}
+        scrollEnabled={false}
       />
       <TouchableOpacity
         style={authStyles.eyeIcon}
@@ -49,6 +53,7 @@ interface PasswordInputProps {
   label: string;
   wrong: boolean;
   placeholder: string;
+  maxLength: number;
 }
 
 export default PasswordInput;

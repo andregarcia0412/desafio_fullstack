@@ -9,12 +9,13 @@ const Input = ({
   keyboardType = "default",
   label,
   wrong,
+  maxLength,
 }: InputProps) => {
   return (
     <View style={authStyles.inputContainer}>
-      <Text style={[ {color: "#999"},  ]}>{label}</Text>
+      <Text style={[{ color: "#999" }]}>{label}</Text>
       <TextInput
-        style={[authStyles.textInput, wrong && {borderColor: "#FF0033"}]}
+        style={[authStyles.textInput, {textAlignVertical:"center", paddingVertical:0}, wrong && { borderColor: "#FF0033" }]}
         placeholderTextColor={"#666"}
         placeholder={placeholder}
         value={text}
@@ -22,6 +23,8 @@ const Input = ({
         onChangeText={setText}
         autoCapitalize="none"
         cursorColor="#666"
+        maxLength={maxLength}
+        scrollEnabled={false}
       />
     </View>
   );
@@ -34,6 +37,7 @@ interface InputProps {
   keyboardType: any;
   label: string;
   wrong: boolean;
+  maxLength: number;
 }
 
 export default Input;
