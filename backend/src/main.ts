@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({origin:"https://desafio-fullstack-beryl.vercel.app"})
+  app.enableCors()
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -12,6 +12,6 @@ async function bootstrap() {
     transform: true
   }))
 
-  await app.listen(process.env.PORT || 3000, '0.0.0.0');
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
