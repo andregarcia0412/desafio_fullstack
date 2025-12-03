@@ -9,14 +9,15 @@ export class MailService {
 
   constructor(private configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
-      host:"smtp.gmail.com",
-      port:465,
-      secure: true,
+      host:"smtp-mail.outlook.com",
+      port:587,
+      secure: false,
       auth: {
         user: this.configService.get<string>('NODEMAILER_USER'),
         pass: this.configService.get<string>('NODEMAILER_PASS'),
       },
       tls: {
+        ciphers:"SSLv3",
         rejectUnauthorized: false
       },
       family: 4,
@@ -35,7 +36,7 @@ export class MailService {
   async sendPasswordResetEmail(to: string, token: string) {
     const resetLink = `https://lookup-finance.vercel.app/reset-password?token=${token}`;
     const mailOptions = {
-      from: 'LookUp Support',
+      from: this.configService.get<string>('NODEMAILER_USER'),
       to: to,
       subject: 'Password Reset Request',
       html: `<p> You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password </a></p>`,
