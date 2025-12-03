@@ -69,7 +69,9 @@ const ExpenseCard = ({
             {category[0].toUpperCase() + category.substring(1)}
           </p>
           <div className="name-date">
-            <p id="name">{name}</p>
+            <p id="name" style={{ textWrap: "pretty" }}>
+              {name}
+            </p>
             <p id="date">
               <img src={Calendar} id="calendar" />
               {formattedDate}
@@ -77,7 +79,7 @@ const ExpenseCard = ({
           </div>
         </div>
         <div className="price-button">
-          <p id="price">
+          <p id="price" style={{ textWrap: "pretty" }}>
             $ <span style={{ color: "#FFF" }}>{Number(price).toFixed(2)}</span>
           </p>
           <div className="card-btns">
