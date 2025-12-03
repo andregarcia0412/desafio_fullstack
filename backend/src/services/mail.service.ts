@@ -1,10 +1,11 @@
 import * as nodemailer from 'nodemailer';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
   private transporter: nodemailer.Transporter;
+  private logger = new Logger(MailService.name)
 
   constructor(private configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
@@ -19,17 +20,32 @@ export class MailService {
         rejectUnauthorized: false
       }
     });
+    this.transporter.verify((error, success) => {
+      if (error) {
+        this.logger.error('ERRO CRÍTICO NA CONEXÃO SMTP:', error);
+      } else {
+        this.logger.log('SMTP CONECTADO COM SUCESSO! Pronto para enviar.');
+      }
+    });
   }
 
   async sendPasswordResetEmail(to: string, token: string) {
-    const resetLink = `http://localhost:8080/reset-password?token=${token}`;
+    const resetLink = `https://lookup-finance.vercel.app/reset-password?token=${token}`;
     const mailOptions = {
-      from: 'LookUp',
+      from: 'LookUp Support',
       to: to,
       subject: 'Password Reset Request',
       html: `<p> You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password </a></p>`,
     };
 
-    await this.transporter.sendMail(mailOptions);
+    try {
+      this.logger.log(`Tentando enviar email para: ${to}`);
+      const info = await this.transporter.sendMail(mailOptions);
+      this.logger.log(`Email enviado! ID: ${info.messageId}`);
+      return info;
+    } catch (error) {
+      this.logger.error(`FALHA AO ENVIAR EMAIL PARA ${to}:`, error);
+      throw error;
+    }
   }
 }
