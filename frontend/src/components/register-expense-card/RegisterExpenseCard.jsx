@@ -24,7 +24,9 @@ const RegisterExpenseCard = ({
   const amountInput = React.useRef();
   const dateInput = React.useRef();
 
-  const [amountInputValue, setAmountInputValue] = React.useState(values[1] || "");
+  const [amountInputValue, setAmountInputValue] = React.useState(
+    values[1] || ""
+  );
 
   const [errorMessage, setErrorMessage] = React.useState("");
 
@@ -180,6 +182,7 @@ const RegisterExpenseCard = ({
             placeholder={placeholders[0]}
             defaultValue={values[0]}
             autoComplete="off"
+            maxLength={32}
           />
         </div>
         <div className="register-input">
@@ -214,6 +217,7 @@ const RegisterExpenseCard = ({
             placeholder={placeholders[3]}
             defaultValue={values[3]}
             autoComplete="off"
+            maxLength={255}
           />
         </div>
         <div className="register-input">
