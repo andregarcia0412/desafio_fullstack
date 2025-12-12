@@ -81,3 +81,14 @@ The mobile app can be started using Expo.
 - Database: PostgreSQL
 - Containerization: Docker & Docker Compose
 
+## Live Access
+
+### Web Version
+You can access the live version of the web app here:  
+**[https://lookup-finance.vercel.app/](https://lookup-finance.vercel.app/)**
+
+### Android APK
+Download the latest Android APK to use the mobile app:  
+**https://github.com/andregarcia0412/LookUp/releases/download/v1.0.2/lookup.apk**
+
+
